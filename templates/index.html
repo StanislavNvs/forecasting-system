@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agriculture Forecasting System</title>
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <!-- Compiled and minified JavaScript -->
+    <style>
+        div.main {
+            padding: 5px 50px 75px 50px;
+        }
+
+        span,img {
+            vertical-align: middle;
+         }
+
+        .brand-logo > span,.brand-logo > img {
+            vertical-align: middle;
+        }
+
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body class="main">
+  <div>
+	<div class="nav-wrapper">
+
+		<h3 class="card-panel #ffd54f amber lighten-2 center valign-wrapper center">
+          <a class="brand-logo  #ffd54f-text text-lighten-4" href="#">
+            <img src="https://img.icons8.com/ios/100/40C057/organic-food.png" class="responsive-img"/>
+            <span>Agriculture Forecasting System</span>
+          </a>
+        </h3>
+
+	</div>
+
+    <!--
+  <h3 class="card-panel #ffd54f amber lighten-2 center valign-wrapper center"><img src="/static/ApnaAnaajLogo.png
+" height="70px" width="70px">Apna Anaaj</h3>
+    -->
+
+    <div class="row">
+    <div class="card-panel col s9">
+      <h4 class=" #e0f7fa cyan lighten-5">Top Gainers(Current trends)</h4>
+      <table class="striped">
+        <thead>
+          <tr>
+              <th>Item Name</th>
+              <th>Price (per Ton)</th>
+              <th>Change</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for item in context['top5'] %}
+          <tr>
+            <td>{{item[0]}}</td>
+            <td>${{item[1]}}</td>
+            <td class="valign-wrapper">{{item[2]}}% <img src="../static/gain-icon.png" height="25" width="25"></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+        <div class="card-panel">
+      <h4 class="#e0f7fa cyan lighten-5">Top Losers(Current trends)</h4>
+      <table class="striped">
+        <thead>
+          <tr>
+              <th>Item Name</th>
+              <th>Price (per Ton)</th>
+              <th>Change</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for item in context['bottom5'] %}
+          <tr>
+            <td>{{item[0]}}</td>
+            <td>${{item[1]}}</td>
+            <td class="valign-wrapper">{{item[2]}}% <img src="../static/loss-icon.png" height="25" width="25"></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+            </div>
+    </div>
+  </div>
+  <h5>Explore by commodity</h5>
+
+    <div class="row">
+      {% for name in context['names'] %}
+      <div class="col s3">
+        <a href="http://localhost:5000/commodity/{{name}}" style="color: #000000">
+          <div class="card grey lighten-4">
+            <div class="card-content row valign-wrapper">
+              <div class="col s3">
+                <img src="https://img.icons8.com/external-gradients-pause-08/64/000000/external-crop-bekery-gradients-pause-08.png"/>
+              </div>
+              <div class="col s9">
+                <span class="card-title">{{name}}</span>
+              </div>
+            </div>
+          </div>
+          </a>
+      </div>
+      {% endfor %}
+     </div>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    $('.slider').slider({full_width :true});
+  });
+</script>
+  </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</html>

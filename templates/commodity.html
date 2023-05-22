@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agriculture Forecasting System</title>
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+     <style>
+        div.main {
+            padding: 5px 50px 75px 50px;
+        }
+    </style>
+        
+</head>
+<body >
+  <div class="main">
+    <div class="nav-wrapper">
+
+		<h3 class="card-panel #ffd54f amber lighten-2 center valign-wrapper center">
+          <a class="brand-logo  #ffd54f-text text-lighten-4" href="/">
+            <img src="https://img.icons8.com/ios/100/40C057/organic-food.png" class="responsive-img"/>
+            <span>Agriculture Forecasting System</span>
+          </a>
+        </h3>
+	</div>
+    <h2 class="header">{{context.name}}</h2>
+    <div class="row">
+        <div class="col s8 m7">
+      <div class="card horizontal medium">
+        <div class="card-image">
+          <img src={{context.image_url}}>
+        </div>
+        <div class="card-stacked">
+          <div class="card-content">
+            <table>
+              <tr>
+                <td>Current Price</td>
+                <td><b>$ {{context.current_price}} / ton</b></td>
+              </tr>
+              <tr>
+                <td>Crop Type</td>
+                <td><b>{{context.type_c}}</b></td>
+              </tr>
+              <tr>
+                <td>Info</td>
+                <td><b></b></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s4">
+      <div class="card grey lighten-3">
+        <div class="card-content black-text">
+           <span class="card-title">Brief Forecast</span>
+          <table>
+            <tr>
+              <td><p>Min. crop price time</p>
+              <td><h5>{{context.min_crop[0]}}</h5></td>
+              <td>
+                <h4>${{context.min_crop[1]}}</h4>
+              </td>
+            </tr>
+            <tr>
+              <td><p>Max. crop price time</p>
+              <td><h5>{{context.max_crop[0]}}</h5></td>
+              <td>
+                <h4>${{context.max_crop[1]}}</h4>
+              </td>
+            </tr>
+          </table>
+
+        </div>       
+      </div>
+    </div>
+  </div>
+    <form method="POST">
+      <select style="display: block;" name="forecast_period">
+        <option disabled selected>Choose forecast period</option>
+        <option value="1">1 month</option>
+        <option value="2">2 months</option>
+        <option value="3">3 months</option>
+        <option value="4">4 months</option>
+        <option value="5">5 months</option>
+        <option value="6">6 months</option>
+        <option value="7">7 months</option>
+        <option value="8">8 months</option>
+        <option value="9">9 months</option>
+        <option value="10">10 months</option>
+        <option value="11">11 months</option>
+        <option value="12">12 months</option>
+      </select>
+      <div class="buttonHolder" style="text-align:center;padding: 10px 0 10px 20px;">
+        <button type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </form>
+</div>
+  <div class="row">    
+    <div class="col s4">
+      <h5>Forecast Trends</h5>
+     <table class="striped">
+        <thead>
+          <tr>
+              <th>Date</th>
+              <th>Price (per Ton)</th>
+              <th>Change</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for item in context.forecast_values %}
+          <tr>
+            <td>{{item[0]}}</td>
+            <td>${{item[1]}}</td>
+            <td class="valign-wrapper">{{item[2]}}% {% if item[2]>=0 %}<img src= "../static/gain-icon.png" height="25" width="25">{% else %}<img src= "../static/loss-icon.png" height="25" width="25">{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+</div>
+<div class="col s2"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+    <div class="chartjs-wrapper col s7 offset-s1">
+    <canvas id="chartjs-0" class="chartjs" width="1000" height="500" style="width:800px; margin-left: auto; margin-right: 0; !important;">
+    </canvas>
+  <script>
+    new Chart(
+    document.getElementById("chartjs-0"),
+      {"type":"line","data":{"labels":{{context.forecast_x|safe}},
+        "datasets":[{"label":"Predicted price","data":{{context.forecast_y}},"fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+          "options":{ responsive: true, maintainAspectRatio: false,
+    scales: {
+        yAxes: [{
+            display: true,
+            ticks: {
+                suggestedMin: {{context.min_crop[1]}},
+                stepSize : 20
+            }
+        }]
+    }}});</script>
+  </div>
+  <div class="chartjs-wrapper col s7 offset-s1" style="float: right;">
+    <canvas id="chartjs-1" class="chartjs" width="1000" height="500" style=" width:800px; !important;">
+    </canvas>
+  <script>
+    new Chart(document.getElementById("chartjs-1"),
+      {"type":"line","data":{"labels":{{context.previous_x|safe}},
+        "datasets":[{"label":"Previous price","data":{{context.previous_y}},"fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+          "options":{ responsive: true, maintainAspectRatio: false,
+    scales: {
+        yAxes: [{
+            display : true,
+            ticks: {
+                suggestedMin : {{context.min_crop[1]}},
+                stepSize : 20
+            }
+        }]
+    }}});</script>
+  </div>
+  </div>
+
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
